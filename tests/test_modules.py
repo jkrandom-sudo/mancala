@@ -39,6 +39,30 @@ class SettingsTest(unittest.TestCase):
                 s = settings_mod.load()
             self.assertEqual(s["difficulty"], settings_mod.DEFAULTS["difficulty"])
 
+    def test_load_sanitizes_invalid_values(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = Path(d) / "s.json"
+            tmp.write_text(json.dumps({
+                "lang": "fr",
+                "sound": "yes",
+                "volume": 99,
+                "difficulty": "easy",
+            }))
+            with patch.object(settings_mod, "DEFAULT_PATH", tmp):
+                s = settings_mod.load()
+            self.assertEqual(s["lang"], settings_mod.DEFAULTS["lang"])
+            self.assertEqual(s["sound"], settings_mod.DEFAULTS["sound"])
+            self.assertEqual(s["volume"], 3)
+            self.assertEqual(s["difficulty"], "easy")
+
+    def test_load_rejects_bool_volume(self):
+        with tempfile.TemporaryDirectory() as d:
+            tmp = Path(d) / "s.json"
+            tmp.write_text(json.dumps({"volume": True}))
+            with patch.object(settings_mod, "DEFAULT_PATH", tmp):
+                s = settings_mod.load()
+            self.assertEqual(s["volume"], settings_mod.DEFAULTS["volume"])
+
     def test_load_corrupt(self):
         with tempfile.TemporaryDirectory() as d:
             tmp = Path(d) / "s.json"

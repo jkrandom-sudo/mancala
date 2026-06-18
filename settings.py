@@ -33,6 +33,14 @@ def load(path: Path = None) -> Dict[str, Any]:
                         s[k] = data[k]
         except (OSError, json.JSONDecodeError):
             pass
+    if s["lang"] not in {"zh", "en"}:
+        s["lang"] = DEFAULTS["lang"]
+    if not isinstance(s["sound"], bool):
+        s["sound"] = DEFAULTS["sound"]
+    if not isinstance(s["volume"], int) or isinstance(s["volume"], bool):
+        s["volume"] = DEFAULTS["volume"]
+    else:
+        s["volume"] = max(0, min(3, s["volume"]))
     if s["difficulty"] not in DIFFICULTY:
         s["difficulty"] = DEFAULTS["difficulty"]
     return s
