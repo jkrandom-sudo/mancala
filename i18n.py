@@ -58,6 +58,12 @@ STRINGS = {
         "result_tie": "平",
         "bye": "再见!",
         "unknown": "未知选择。",
+        "err_game_over": "游戏已结束",
+        "err_pit_out_of_range": "坑号超出范围",
+        "err_cannot_pick_from_store": "不能从大坑取子",
+        "err_not_your_pit": "不是你的坑",
+        "err_pit_is_empty": "坑是空的",
+        "err_no_legal_moves": "没有合法的移动",
     },
     "en": {
         "title": "Mancala",
@@ -119,6 +125,12 @@ STRINGS = {
         "result_tie": "TIE",
         "bye": "Bye!",
         "unknown": "Unknown choice.",
+        "err_game_over": "Game is over",
+        "err_pit_out_of_range": "Pit out of range",
+        "err_cannot_pick_from_store": "Cannot pick from store",
+        "err_not_your_pit": "Not your pit",
+        "err_pit_is_empty": "Pit is empty",
+        "err_no_legal_moves": "No legal moves",
     },
 }
 

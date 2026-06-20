@@ -27,7 +27,14 @@ STORES = (6, 13)
 
 
 class IllegalMove(Exception):
-    pass
+    """Raised when a move is invalid. code is a translatable error key."""
+    def __init__(self, code: str, **fmt):
+        self.code = code
+        self.fmt = fmt
+        super().__init__(code)
+
+    def __str__(self):
+        return self.code
 
 
 def opposite_pit(pit: int) -> int:
@@ -38,7 +45,7 @@ def opposite_pit(pit: int) -> int:
         return 12 - pit  # 0<->12, 1<->11, 2<->10, 3<->9, 4<->8, 5<->7
     if 7 <= pit <= 12:
         return 12 - pit
-    raise ValueError(f"pit {pit} out of range")
+    raise IllegalMove("err_pit_out_of_range", pit=pit)
 
 
 def player_pits(player: int) -> range:
@@ -116,16 +123,16 @@ class Board:
         wrong-side-pit, or if game already over.
         """
         if self.is_game_over():
-            raise IllegalMove("game is over")
+            raise IllegalMove("err_game_over")
         if not (0 <= pit < TOTAL_PITS):
-            raise IllegalMove("pit out of range")
+            raise IllegalMove("err_pit_out_of_range")
         if pit in STORES:
-            raise IllegalMove("cannot pick from store")
+            raise IllegalMove("err_cannot_pick_from_store")
         if pit not in player_pits(self.current_player):
-            raise IllegalMove("not your pit")
+            raise IllegalMove("err_not_your_pit")
         seeds = self.pits[pit]
         if seeds == 0:
-            raise IllegalMove("pit is empty")
+            raise IllegalMove("err_pit_is_empty")
 
         # Snapshot for undo
         snapshot = (list(self.pits), self.current_player)

@@ -120,7 +120,8 @@ def play_round(
             try:
                 info = board.move(pit)
             except IllegalMove as e:
-                write(output, t(lang, "illegal_move", reason=str(e)))
+                reason = t(lang, e.code, **e.fmt) if e.fmt else t(lang, e.code)
+                write(output, t(lang, "illegal_move", reason=reason))
                 continue
             sound.click()
             if info["captured"] > 0:

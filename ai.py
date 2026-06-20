@@ -42,7 +42,7 @@ def best_move(
     rng = rng or random.Random()
     moves = board.legal_moves()
     if not moves:
-        raise IllegalMove("no legal moves")
+        raise IllegalMove("err_no_legal_moves")
     me = board.current_player
     best_val = float("-inf")
     best_moves = []
